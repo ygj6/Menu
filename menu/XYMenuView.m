@@ -11,7 +11,7 @@
 #import "MenuUIModel.h"
 
 #define ANGLE M_PI*2.5/180.0
-#define FilePathInDoc(s) [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:(s)]
+#define FilePathInDoc(s) [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:(s)]
 
 
 @interface XYMenuView()
@@ -98,9 +98,9 @@ static int ceilingf(float f);
     CGFloat uw = validFrame.size.width / _matrix.column;
     CGFloat uh = validFrame.size.height / _matrix.row;
     
-    int page = index / (_matrix.column * _matrix.row);
-    int row = index % (_matrix.column * _matrix.row) / _matrix.column;
-    int col = index % (_matrix.column * _matrix.row) % _matrix.column;
+    int page = (int)index / (_matrix.column * _matrix.row);
+    int row = (int)index % (_matrix.column * _matrix.row) / _matrix.column;
+    int col = (int)index % (_matrix.column * _matrix.row) % _matrix.column;
     
     CGFloat x = size.width * page + col * uw + validFrame.origin.x;
     CGFloat y = row * uh + validFrame.origin.y;
@@ -151,7 +151,7 @@ static int ceilingf(float f);
     aMenu.deleteButtonIconName = self.deleteButtonIconName;
     aMenu.delegate=self;
     aMenu.frame=CGRectMake(0, 0, self.elementSize.width, self.elementSize.height);
-    aMenu.center=[self getMenuCenter:aMenu.menuData.serial];
+    aMenu.center=[self getMenuCenter:(int)aMenu.menuData.serial];
     if (_enableEdit) {
         UILongPressGestureRecognizer* longPress=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongPress:)];
         longPress.delegate=self;
@@ -399,8 +399,8 @@ static int ceilingf(float f);
             [self sortAllMenuAnimated:YES];
         }
         
-        NSUInteger area=[self areaContainsPoint:currentMenu.center];
-        NSUInteger total=[self numberOfMenus];
+//        NSUInteger area=[self areaContainsPoint:currentMenu.center];
+//        NSUInteger total=[self numberOfMenus];
 //        if (area >= total) {
 //            if (self.menuDelegate && [self.menuDelegate respondsToSelector:@selector(menuView:moveMenuToTail:)]) {
 //                
